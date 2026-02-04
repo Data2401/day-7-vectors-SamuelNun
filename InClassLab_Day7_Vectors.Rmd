@@ -1,6 +1,6 @@
 ---
 title: "In Class Lab"
-author: "Dr. Shoemaker"
+author: "Samuel Nunez"
 date: "DATA 2401"
 output: html_document
 ---
@@ -20,6 +20,17 @@ knitr::opts_chunk$set(echo = TRUE)
 4. Create a vector `m` that contains the numbers 10 to 1 (in that order), in two different ways, neither of which is just typing "10, 9 , 8 ...".  Hint: use one of the helper functions we learned.
 5. Subtract `m` FROM `n`. Note the recycling!
 
+```{r}
+n <- 10:49 # Creates vector n with numbers 10 to 49
+length(n) # Shows the length of the vector
+n + 1 # Adds 1 to each element in n
+
+m <- 10:1        # Creating a vector using the colon (:) operator
+m <- seq(10 , 1) # Creating a vector using seq()
+
+n - m # Subtracts vector m from n
+
+```
 ### Set 2 
 
 1. Use the `seq()` function to produce a range of numbers from -5 to 10 in `0.1` increments. Store it in a variable `x_range`

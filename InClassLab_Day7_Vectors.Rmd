@@ -39,6 +39,12 @@ n - m # Subtracts vector m from n
      + the x vector goes in the first argument, the y vector goes in the second argument
      + You'll need to add the argument `type = "l"` for a line. NOTE: That is a lower case "L", not a 1. 
 
+``` {r}
+x_range <- seq(-5, 10, by = .1) # Creates a vector, x_range, with numbers -5 to 10 in increments of .1
+sin_wave <- sin(sin(x_range))   # Creates a vector, sin_wave, that runs the sin() function on each x_range and stores it
+
+plot(x_range, sin_wave, type = "l") # Displays a plot of sin_wave vs x_range
+```
 
 ### Set 3 
 

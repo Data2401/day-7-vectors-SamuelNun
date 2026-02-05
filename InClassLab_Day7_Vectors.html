@@ -428,6 +428,21 @@ elements and last 3 elements of your combined vector.</li>
 <li>Bonus/extra: do the above in a way that would work no matter how
 long the vector is (as long as it’s longer than 2 elements)</li>
 </ol>
+<pre class="r"><code>first_nums &lt;- 40:50 # Creates a vector, first_nums, that contains the numbers 40 through 50
+next_nums &lt;- seq(51, 60) # Creates a vector, next_nums, that contains the numbers 51 through 60
+
+combined_nums &lt;- c(first_nums, next_nums) # Combines both vectors into one called combined_nums
+
+combined_nums[7] # Indexes the 7th element in combined_nums</code></pre>
+<pre><code>## [1] 46</code></pre>
+<pre class="r"><code>combined_nums[5:8] # Indexes the 5th to the 8th elements in combined_nums</code></pre>
+<pre><code>## [1] 44 45 46 47</code></pre>
+<pre class="r"><code>first_three &lt;- combined_nums[1:3] # Creates a vector that gets the first three elements of combined_nums
+last_three &lt;- combined_nums[seq(length(combined_nums)- 2 , length(combined_nums))] # Creates a vector that gets the last three elements of combined_nums
+
+new_nums &lt;- c(first_three, last_three)# Combines both vectors into new_nums
+new_nums # Outputs the vector with the first three and last three elements</code></pre>
+<pre><code>## [1] 40 41 42 58 59 60</code></pre>
 </div>
 </div>
 <div id="in-class-activities" class="section level2">

@@ -460,7 +460,16 @@ below.</li>
 <li>Hint: x[is.na(x)] &lt;- …</li>
 </ul></li>
 </ul>
-<pre class="r"><code>x &lt;- c(3.2, NA, 4.1, 5.0, NA, 2.8)</code></pre>
+<pre class="r"><code>x &lt;- c(3.2, NA, 4.1, 5.0, NA, 2.8) # Vector with pre-set values
+is.na(x) # Displays if each element is True or False</code></pre>
+<pre><code>## [1] FALSE  TRUE FALSE FALSE  TRUE FALSE</code></pre>
+<pre class="r"><code>x_no_na &lt;- x[!is.na(x)] # Removes all the NA from the list
+
+x_mean &lt;- sum(x_no_na)/length(x_no_na) # Gets the mean of the non-NA values
+x_replaced_na &lt;- x # Creates a new vector to replace NA values with mean
+x_replaced_na[is.na(x)] &lt;- x_mean # Replaces NA values with mean
+x_replaced_na # Displays new vector</code></pre>
+<pre><code>## [1] 3.200 3.775 4.100 5.000 3.775 2.800</code></pre>
 <ol style="list-style-type: decimal">
 <li>Logical indexing</li>
 </ol>
@@ -475,6 +484,17 @@ below.</li>
 <li>sum(is_a) (since TRUE counts as 1)</li>
 </ul></li>
 </ul>
+<pre class="r"><code>grades &lt;- c(99,  77, 100,  91,  87,  72,  82,  94,  81) # Grades vector from class
+is_a &lt;- grades &gt;= 90 # Boolean list of grades that are A&#39;s
+
+grades[is_a] # Displays all A&#39;s</code></pre>
+<pre><code>## [1]  99 100  91  94</code></pre>
+<pre class="r"><code>which(is_a) # Displays the index of the A&#39;s</code></pre>
+<pre><code>## [1] 1 3 4 8</code></pre>
+<pre class="r"><code>length(grades[is_a]) # Outputs the number of A&#39;s</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>sum(is_a) # Outputs the number of A&#39;s</code></pre>
+<pre><code>## [1] 4</code></pre>
 <ol style="list-style-type: decimal">
 <li>Emperical probabilities</li>
 </ol>
@@ -487,18 +507,69 @@ below.</li>
 by length(rolls).</li>
 <li>Which face was most common in your simulation?</li>
 </ul>
+<pre class="r"><code>set.seed(2401) # Sets seed for randomization
+
+rolls &lt;- sample(1:6, size = 200, replace = TRUE) # Simulates 200 rols of a 6-sided dice
+counts &lt;- table(rolls) # Counts how many times each face appears
+counts # Outputs counts</code></pre>
+<pre><code>## rolls
+##  1  2  3  4  5  6 
+## 33 40 35 38 31 23</code></pre>
+<pre class="r"><code>props &lt;- counts/length(rolls) # Converts counts to proportions
+props # Outputs the proportions</code></pre>
+<pre><code>## rolls
+##     1     2     3     4     5     6 
+## 0.165 0.200 0.175 0.190 0.155 0.115</code></pre>
 <ol style="list-style-type: decimal">
-<li><p>Write a <em>function</em> to simulate rolling a 6-sided die and
-returns the result.</p></li>
-<li><p>Write a function to simulate rolling 2 6-sided dice that returns
-the sum of the rolls.</p></li>
-<li><p>Write a function that takes two people name’s as strings,
-simulates rolling a 6-sided die for each of the names, then returns the
-name of the person with the higher roll. The function should reroll once
-on a tie, but if there is a second tie, it should return
-“draw”.</p></li>
+<li>Write a <em>function</em> to simulate rolling a 6-sided die and
+returns the result.</li>
 </ol>
-<pre class="r"><code># Your one-roll function goes here</code></pre>
+<pre class="r"><code>roll_die &lt;- function() { # Function simulates rolling a 6-sided die
+  return(sample(1:6,size = 1)) # Outputs a random die roll
+}
+roll_die() # Runs function</code></pre>
+<pre><code>## [1] 1</code></pre>
+<ol style="list-style-type: decimal">
+<li>Write a function to simulate rolling 2 6-sided dice that returns the
+sum of the rolls.</li>
+</ol>
+<pre class="r"><code>roll_two_die &lt;- function() { # Function simulates rolling two 6-sided die
+  return( sum(sample(1:6, size = 2, replace = TRUE)) ) # Outputs the two random die rolls
+}
+roll_two_die() # Runs function</code></pre>
+<pre><code>## [1] 4</code></pre>
+<ol style="list-style-type: decimal">
+<li>Write a function that takes two people name’s as strings, simulates
+rolling a 6-sided die for each of the names, then returns the name of
+the person with the higher roll. The function should reroll once on a
+tie, but if there is a second tie, it should return “draw”.</li>
+</ol>
+<pre class="r"><code># Your one-roll function goes here
+
+name_roll &lt;- function(name1, name2) { # Function takes two names and simulates one die roll each and outputs the winner
+
+roll_1 &lt;- roll_die() # Rolls once for player 1
+roll_2 &lt;- roll_die() # Rolls once for player 2
+
+# Outputs winner from both rolls
+if (roll_1 &gt; roll_2) 
+  return(name1)
+if (roll_2 &gt; roll_1) 
+  return(name2)
+  
+# Rolls dice again if results are tie
+roll_1 &lt;- roll_die()
+roll_2 &lt;- roll_die()
+  
+# Outputs winner from both rolls
+if (roll_1 &gt; roll_2) return(name1)
+if (roll_2 &gt; roll_1) return(name2)
+
+return(&quot;draw&quot;) # Outputs draw message if tie happens a second time
+}
+
+name_roll(&quot;Sam&quot;, &quot;John&quot;)</code></pre>
+<pre><code>## [1] &quot;John&quot;</code></pre>
 <ol style="list-style-type: decimal">
 <li>Write a second function (you may start by modifying the first one)
 that takes two names as strings, simulates both of them rolling die 15
@@ -518,13 +589,73 @@ reroll ties this time, but don’t count them as “wins”.</li>
 <li>number of ties (sum(ties))</li>
 </ul></li>
 </ul>
+<pre class="r"><code>name_roll_15 &lt;- function(name1, name2) { # Function takes two names and simulates one die roll each and outputs the winner
+
+p1 &lt;- sample(1:6, size = 15, replace = TRUE) # Rolls once for player 1
+p2 &lt;- sample(1:6, size = 15, replace = TRUE) # Rolls once for player 2
+
+# Vector logic for wins and ties
+p1_wins &lt;- p1 &gt; p2 
+p2_wins &lt;- p2 &gt; p1 
+ties &lt;- p1 == p2 
+
+print(paste(name1, &quot;wins:&quot;, sum(p1_wins))) # Displays how many times p1 wins
+print(paste(name2, &quot;wins:&quot;, sum(p2_wins)))# Displays how many times p2 wins
+print(paste(&quot;Ties:&quot;, sum(ties))) # Displays how many player tied
+
+# Outputs winner
+if (sum(p1_wins) &gt; sum(p2_wins)) 
+  return(name1)
+else if (sum(p2_wins) &gt; sum(p1_wins)) 
+  return(name2)
+else
+  return(&quot;draw&quot;) # Outputs draw message if neither player has more wins than the other
+}
+
+name_roll_15(&quot;Sam&quot;, &quot;John&quot;)</code></pre>
+<pre><code>## [1] &quot;Sam wins: 7&quot;
+## [1] &quot;John wins: 4&quot;
+## [1] &quot;Ties: 4&quot;</code></pre>
+<pre><code>## [1] &quot;Sam&quot;</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Modify your function from (2) so that the person in the first
 argument has a die that is weighted to get higher numbers more often
 (you may decide the actual percentage change). Run the function ten or
 so times. Does the second person ever win?</li>
 </ol>
-<pre class="r"><code># Your &quot;cheating&quot; function goes here</code></pre>
+<pre class="r"><code># Your &quot;cheating&quot; function goes here
+name_roll_15_cheating &lt;- function(name1, name2) { # Function takes two names and simulates one die roll each and outputs the winner
+
+weighted_die &lt;- c(0.05, 0.05, 0.05, 0.25, 0.30, 0.30) # Changes the probability to roll high
+
+p1 &lt;- sample(1:6, size = 15, replace = TRUE, prob = weighted_die) # Rolls once for player 1
+p2 &lt;- sample(1:6, size = 15, replace = TRUE) # Rolls once for player 2
+
+# Vector logic for wins and ties
+p1_wins &lt;- p1 &gt; p2 
+p2_wins &lt;- p2 &gt; p1 
+ties &lt;- p1 == p2 
+
+print(paste(name1, &quot;wins:&quot;, sum(p1_wins))) # Displays how many times p1 wins
+print(paste(name2, &quot;wins:&quot;, sum(p2_wins)))# Displays how many times p2 wins
+print(paste(&quot;Ties:&quot;, sum(ties))) # Displays how many player tied
+
+# Outputs winner
+if (sum(p1_wins) &gt; sum(p2_wins)) 
+  return(name1)
+else if (sum(p2_wins) &gt; sum(p1_wins)) 
+  return(name2)
+else
+  return(&quot;draw&quot;) # Outputs draw message if neither player has more wins than the other
+}
+
+name_roll_15(&quot;Sam&quot;, &quot;John&quot;)</code></pre>
+<pre><code>## [1] &quot;Sam wins: 5&quot;
+## [1] &quot;John wins: 7&quot;
+## [1] &quot;Ties: 3&quot;</code></pre>
+<pre><code>## [1] &quot;John&quot;</code></pre>
+<p>I might just be unlcuky, but I’ve seen player 2 win more times than
+player 1 has, even after drastically changing the weighted die.</p>
 </div>
 
 

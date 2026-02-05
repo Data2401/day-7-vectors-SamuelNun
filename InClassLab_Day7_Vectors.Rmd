@@ -83,8 +83,14 @@ new_nums # Outputs the vector with the first three and last three elements
      * Hint: x[is.na(x)] <- ...
 
 ```{r}
-x <- c(3.2, NA, 4.1, 5.0, NA, 2.8)
+x <- c(3.2, NA, 4.1, 5.0, NA, 2.8) # Vector with pre-set values
+is.na(x) # Displays if each element is True or False
+x_no_na <- x[!is.na(x)] # Removes all the NA from the list
 
+x_mean <- sum(x_no_na)/length(x_no_na) # Gets the mean of the non-NA values
+x_replaced_na <- x # Creates a new vector to replace NA values with mean
+x_replaced_na[is.na(x)] <- x_mean # Replaces NA values with mean
+x_replaced_na # Displays new vector
 ```
 
 1. Logical indexing
@@ -98,6 +104,13 @@ x <- c(3.2, NA, 4.1, 5.0, NA, 2.8)
      * sum(is_a) (since TRUE counts as 1)
 
 ```{r}
+grades <- c(99,  77, 100,  91,  87,  72,  82,  94,  81) # Grades vector from class
+is_a <- grades >= 90 # Boolean list of grades that are A's
+
+grades[is_a] # Displays all A's
+which(is_a) # Displays the index of the A's
+length(grades[is_a]) # Outputs the number of A's
+sum(is_a) # Outputs the number of A's
 
 ```
 
@@ -111,6 +124,14 @@ x <- c(3.2, NA, 4.1, 5.0, NA, 2.8)
 
 
 ```{r}
+set.seed(2401) # Sets seed for randomization
+
+rolls <- sample(1:6, size = 200, replace = TRUE) # Simulates 200 rols of a 6-sided dice
+counts <- table(rolls) # Counts how many times each face appears
+counts # Outputs counts
+
+props <- counts/length(rolls) # Converts counts to proportions
+props # Outputs the proportions
 
 ```
 
@@ -118,7 +139,10 @@ x <- c(3.2, NA, 4.1, 5.0, NA, 2.8)
 1. Write a *function* to simulate rolling a 6-sided die and returns the result.
 
 ```{r}
-
+roll_die <- function() { # Function simulates rolling a 6-sided die
+  return(sample(1:6,size = 1)) # Outputs a random die roll
+}
+roll_die() # Runs function
 ```
 
 
@@ -126,7 +150,10 @@ x <- c(3.2, NA, 4.1, 5.0, NA, 2.8)
 1. Write a function to simulate rolling 2 6-sided dice that returns the sum of the rolls. 
 
 ```{r}
-
+roll_two_die <- function() { # Function simulates rolling two 6-sided die
+  return( sum(sample(1:6, size = 2, replace = TRUE)) ) # Outputs the two random die rolls
+}
+roll_two_die() # Runs function
 
 ```
 
@@ -136,6 +163,30 @@ x <- c(3.2, NA, 4.1, 5.0, NA, 2.8)
 
 ```{r}
 # Your one-roll function goes here
+
+name_roll <- function(name1, name2) { # Function takes two names and simulates one die roll each and outputs the winner
+
+roll_1 <- roll_die() # Rolls once for player 1
+roll_2 <- roll_die() # Rolls once for player 2
+
+# Outputs winner from both rolls
+if (roll_1 > roll_2) 
+  return(name1)
+if (roll_2 > roll_1) 
+  return(name2)
+  
+# Rolls dice again if results are tie
+roll_1 <- roll_die()
+roll_2 <- roll_die()
+  
+# Outputs winner from both rolls
+if (roll_1 > roll_2) return(name1)
+if (roll_2 > roll_1) return(name2)
+
+return("draw") # Outputs draw message if tie happens a second time
+}
+
+name_roll("Sam", "John")
 
 ```
 
@@ -154,8 +205,30 @@ Process:
      * number of ties (sum(ties))
 
 ```{r}
+name_roll_15 <- function(name1, name2) { # Function takes two names and simulates one die roll each and outputs the winner
 
+p1 <- sample(1:6, size = 15, replace = TRUE) # Rolls once for player 1
+p2 <- sample(1:6, size = 15, replace = TRUE) # Rolls once for player 2
 
+# Vector logic for wins and ties
+p1_wins <- p1 > p2 
+p2_wins <- p2 > p1 
+ties <- p1 == p2 
+
+print(paste(name1, "wins:", sum(p1_wins))) # Displays how many times p1 wins
+print(paste(name2, "wins:", sum(p2_wins)))# Displays how many times p2 wins
+print(paste("Ties:", sum(ties))) # Displays how many player tied
+
+# Outputs winner
+if (sum(p1_wins) > sum(p2_wins)) 
+  return(name1)
+else if (sum(p2_wins) > sum(p1_wins)) 
+  return(name2)
+else
+  return("draw") # Outputs draw message if neither player has more wins than the other
+}
+
+name_roll_15("Sam", "John")
 ```
 
 
@@ -163,5 +236,32 @@ Process:
 
 ```{r}
 # Your "cheating" function goes here
+name_roll_15_cheating <- function(name1, name2) { # Function takes two names and simulates one die roll each and outputs the winner
+
+weighted_die <- c(0.05, 0.05, 0.05, 0.25, 0.30, 0.30) # Changes the probability to roll high
+
+p1 <- sample(1:6, size = 15, replace = TRUE, prob = weighted_die) # Rolls once for player 1
+p2 <- sample(1:6, size = 15, replace = TRUE) # Rolls once for player 2
+
+# Vector logic for wins and ties
+p1_wins <- p1 > p2 
+p2_wins <- p2 > p1 
+ties <- p1 == p2 
+
+print(paste(name1, "wins:", sum(p1_wins))) # Displays how many times p1 wins
+print(paste(name2, "wins:", sum(p2_wins)))# Displays how many times p2 wins
+print(paste("Ties:", sum(ties))) # Displays how many player tied
+
+# Outputs winner
+if (sum(p1_wins) > sum(p2_wins)) 
+  return(name1)
+else if (sum(p2_wins) > sum(p1_wins)) 
+  return(name2)
+else
+  return("draw") # Outputs draw message if neither player has more wins than the other
+}
+
+name_roll_15("Sam", "John")
 ```
 
+I might just be unlcuky, but I've seen player 2 win more times than player 1 has, even after drastically changing the weighted die.
